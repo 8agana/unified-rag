@@ -29,3 +29,7 @@ test-data/
 # Documentation build
 docs/_build/
 docs/.doctrees/
+
+# Added by cargo
+
+/target

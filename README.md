@@ -32,18 +32,38 @@ A Model Context Protocol (MCP) server implementing a sophisticated Retrieval-Aug
 - **Databases**: Redis 8+ (with modules), Qdrant 1.10+
 - **Embedding Model**: TBD (considering all-MiniLM-L6-v2 or similar)
 
+## Configuration
+
+Environment variables:
+- `REDIS_HOST`: Redis host (default: 127.0.0.1)
+- `REDIS_PORT`: Redis port (default: 6379)
+- `REDIS_PASSWORD`: Redis password (optional)
+- `QDRANT_HOST`: Qdrant host (default: 127.0.0.1)
+- `QDRANT_PORT`: Qdrant port (default: 6334 - uses gRPC port)
+- `QDRANT_PROTOCOL`: Qdrant protocol (default: http)
+- `QDRANT_COLLECTION`: Qdrant collection name (default: unified_rag)
+- `INSTANCE_ID`: Instance identifier (default: CC)
+- `OPENAI_API_KEY`: OpenAI API key for embeddings (required)
+
+**Note**: The MCP now uses Qdrant's gRPC port (6334) by default to avoid HTTP/2 protocol issues.
+
 ## Getting Started
 
 ```bash
-# Clone the repository
-git clone https://github.com/8agana/unified-rag.git
-cd unified-rag
-
 # Build the project
 cargo build --release
 
-# Run tests
-cargo test
+# Test connections
+bash test_connection.sh
+
+# Set required environment variable
+export OPENAI_API_KEY="your-openai-api-key"
+
+# Run the MCP server
+./target/release/unified-rag
+
+# For interactive testing
+bash test_interactive.sh
 ```
 
 ## License

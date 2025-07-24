@@ -1,0 +1,60 @@
+[package]
+name = "unified-rag"
+version = "0.1.0"
+edition = "2021"
+authors = ["Sam Atagana <sam.atagana@gmail.com>"]
+description = "Unified RAG MCP with Redis L1 cache and Qdrant L2 semantic search"
+license = "MIT"
+
+[dependencies]
+# Core MCP functionality
+rmcp = { version = "0.3.0", features = ["transport-io"] }
+rmcp-macros = "0.3.0"
+
+# Async runtime
+tokio = { version = "1.41", features = ["full"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+schemars = "1.0"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "2.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Redis integration for L1 cache
+redis = { version = "0.27", features = ["tokio-comp", "json", "aio", "connection-manager"] }
+deadpool-redis = "0.18"
+
+# Qdrant client for L2 semantic search
+qdrant-client = "1.12"
+
+# OpenAI for embeddings
+async-openai = "0.26"
+
+# Additional utilities
+uuid = { version = "1.11", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+base64 = "0.22"
+reqwest = { version = "0.12", features = ["json"] }
+async-trait = "0.1"
+md5 = "0.7"
+
+# Vector operations
+ndarray = "0.16"
+
+[dev-dependencies]
+mockall = "0.13"
+wiremock = "0.6"
+tempfile = "3.14"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
