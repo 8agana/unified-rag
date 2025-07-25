@@ -4,8 +4,10 @@ echo "Testing Unified-RAG MCP with proper protocol..."
 
 # Create a test script that sends proper MCP messages
 cat > /tmp/mcp_test_input.jsonl << 'EOF'
-{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"1.0.0","capabilities":{"tools":{}}},"id":1}
-{"jsonrpc":"2.0","method":"tools/call","params":{"name":"rag_search","arguments":{"query":"test search","limit":5,"threshold":0.7,"hybrid_mode":true}},"id":2}
+{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test-client","version":"1.0.0"}},"id":1}
+{"jsonrpc":"2.0","method":"initialized","params":{}}
+{"jsonrpc":"2.0","method":"tools/list","params":{},"id":2}
+{"jsonrpc":"2.0","method":"tools/call","params":{"name":"rag_search","arguments":{"query":"test search","limit":5,"threshold":0.7,"hybrid_mode":true}},"id":3}
 EOF
 
 # Run the MCP with proper environment

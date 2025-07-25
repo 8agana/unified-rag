@@ -1,5 +1,5 @@
 use anyhow::Result;
-use rmcp::{ServiceExt, transport::stdio};
+use rmcp::ServiceExt;
 use tracing_subscriber;
 
 mod config;
@@ -9,6 +9,7 @@ mod search;
 mod tools;
 mod service;
 mod error;
+mod transport_wrapper;
 
 use crate::service::UnifiedRagService;
 
@@ -35,11 +36,13 @@ async fn main() -> Result<()> {
         }
     };
     
-    // Start the MCP server on stdio transport
-    let server = match service.serve(stdio()).await {
+    // Log that we're about to start serving
+    tracing::info!("About to start serving on stdio transport");
+    
+    // Start the MCP server with stdio transport
+    let server = match service.serve(rmcp::transport::stdio()).await {
         Ok(s) => s,
         Err(e) => {
-            tracing::error!("Failed to start MCP server: {}", e);
             tracing::error!("Failed to start MCP server: {}", e);
             std::process::exit(1);
         }
@@ -50,7 +53,6 @@ async fn main() -> Result<()> {
     // This keeps the server running until the transport closes
     if let Err(e) = server.waiting().await {
         tracing::error!("Server error while waiting: {}", e);
-        tracing::error!("Server error: {}", e);
     }
     
     tracing::info!("UnifiedRAG MCP server shutting down");

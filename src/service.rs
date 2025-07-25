@@ -206,4 +206,19 @@ impl UnifiedRagService {
 }
 
 #[tool_handler]
-impl ServerHandler for UnifiedRagService {}
+impl ServerHandler for UnifiedRagService {
+    fn get_info(&self) -> rmcp::model::ServerInfo {
+        rmcp::model::ServerInfo {
+            protocol_version: rmcp::model::ProtocolVersion::V_2024_11_05,
+            server_info: rmcp::model::Implementation {
+                name: "unified-rag".into(),
+                version: env!("CARGO_PKG_VERSION").into(),
+            },
+            capabilities: rmcp::model::ServerCapabilities {
+                tools: Some(Default::default()),
+                ..Default::default()
+            },
+            instructions: Some("UnifiedRAG MCP Server - Hybrid search with Redis cache and Qdrant semantic search".into()),
+        }
+    }
+}
